@@ -1,23 +1,34 @@
 from config import *
 
-
 import logging, asyncio
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters.command import Command
-# from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, FSInputFile
-# from aiogram.utils.keyboard import InlineKeyboardBuilder, ReplyKeyboardBuilder
-# from aiogram import F
 
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, FSInputFile, CallbackQuery
+from aiogram.utils.keyboard import InlineKeyboardBuilder, ReplyKeyboardBuilder
+from aiogram import F
 
 logging.basicConfig(level=logging.INFO)
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
 
-
 @dp.message(Command("start"))
 async def start(message: types.Message):
-    await message.answer("Приветствуем вас снова ")
+    keyboard = InlineKeyboardBuilder()
+    keyboard.add(InlineKeyboardButton(text="Сюжет", callback_data="plot"),
+                 InlineKeyboardButton(text="Песочница", callback_data="sandbox"))
+    await message.answer("Приветствуем вас!", reply_markup=keyboard.as_markup())
+
+
+@dp.callback_query(F.data == "plot")
+async def plot(call: types.CallbackQuery):
+    await call.message.answer("1")
+
+
+@dp.callback_query(F.data == "sandbox")
+async def plot(call: types.CallbackQuery):
+    await call.message.answer("2")
 
 
 async def main():
