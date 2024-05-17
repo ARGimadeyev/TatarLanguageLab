@@ -161,6 +161,9 @@ void Error(int i, int j) {
 void solve() {
 	std::locale l(getenv("LANG"));
     std::locale::global(l);
+
+    freopen("InputKross.txt", "r", stdin);
+    freopen("OutputKross.txt", "w", stdout);
 	vector<pair<Cord, Cord>> one;
 	vector<wstring> two;
 	vector<int> KrossWords;
@@ -223,7 +226,8 @@ void solve() {
             }
         }
     }
-
+	
+    wcout << mxH + 1 << L" " <<  mxN + 1 << L"\n";
     for (int i = 0; i < mxH + 1; ++i) {
         for (int j = mxN; j >= 0; --j) {
             wcout << base[i][j] << " ";
