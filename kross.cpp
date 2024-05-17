@@ -2,6 +2,7 @@
 
 using namespace std;
 
+
 mt19937 rnd(chrono::steady_clock::now().time_since_epoch().count());
 
 const int INF = 1e9;
@@ -36,13 +37,15 @@ bool Inter(Cord a, Cord b, Cord a1, Cord b1) {
 }
 
 //for input some words
-bool input(int &n, vector<string> &words, int &k) {
-	cin >> n;
+bool input(int &n, vector<wstring> &words, int &k) {
+	std::locale l(getenv("LANG"));
+    std::locale::global(l);
+	wcin >> n;
 	words.resize(n);
 	for (int i = 0; i < n; i++) {
-		cin >> words[i];
+		wcin >> words[i];
 	}
-	cin >> k;
+	wcin >> k;
 	return true;
 }
 
@@ -50,7 +53,9 @@ int GetRndBefore(int n) {
 	return abs((int) rnd()) % n;
 }
 
-int GetWord(const vector<vector<int>> &ForChar, const vector<bool>used, const vector<string> &words) {
+int GetWord(const vector<bool>used, const vector<wstring> &words) {
+	std::locale l(getenv("LANG"));
+    std::locale::global(l);
 	while (true) {
 		int now = GetRndBefore(words.size());
 		if (used[now]) continue;
@@ -73,33 +78,27 @@ bool CheckIfInter(Cord beg, Cord ed, vector<pair<Cord, Cord>> Cords, int need) {
 	return true;
 }
 
-int main() {
+void WordKross(vector<wstring> &words, vector<pair<Cord, Cord>> &Cords, vector<int> &KrossWords) {
+	
+	std::locale l(getenv("LANG"));
+    std::locale::global(l);
 	int n;
-	vector<string> words;
 	int k;
+
 	bool OkInput = input(n, words, k);
 	if (!OkInput) {
 		cout << -1 << endl;
-		return -1;
+		return;
 	}
 	
-	vector<vector<int>> ForChar(26);//array of words for each letter, which contain that letter
 	vector<bool> used(n, false);//usedd words
 	int start = GetRndBefore(n);//first word
-	vector<pair<Cord, Cord>> Cords;//Cords of words
-	vector<int> KrossWords;//indexes taken words
 	vector<vector<bool>> UsedForKross;
 	
 	KrossWords.push_back(start);
 	used[start] = true;
 	Cords.push_back({Cord(0, 0), Cord(words[start].size() - 1, 0)});
 	UsedForKross.push_back(vector<bool>(words[start].size()));
-
-	for (int i = 0; i < n; i++) {
-		for (char j : words[i]) {
-			ForChar[j - 'a'].push_back(i);
-		}
-	}
 	
 	for (int _ = 1; _ < k; _++) {
 		bool ok = true;
@@ -118,7 +117,7 @@ int main() {
 			       	bool Norm = false;
 
 
-				int now = GetWord(ForChar, used, words);
+				int now = GetWord(used, words);
 				for (int j = 0; j < words[now].size(); j++) {
 					if (words[now][j] != words[KrossWords[id]][i]) continue;
 					
@@ -148,10 +147,94 @@ int main() {
 		}
 	}
 	
-	cout << Cords.size() << "\n";
-	for (int i = 0; i < Cords.size(); i++) {
-		cout << words[KrossWords[i]] << " " << Cords[i].first.x << " " << Cords[i].first.y << " " << Cords[i].second.x << " " << Cords[i].second.y << "\n";
-	}
 
+	return;
+}
+
+void Error(int i, int j) {
+	std::locale l(getenv("LANG"));
+    std::locale::global(l);
+    wcout << "\nWE HAVE AN ERROR IN " << i + 1 << ' ' << j + 1;
+    exit(0);
+}
+
+void solve() {
+	std::locale l(getenv("LANG"));
+    std::locale::global(l);
+	vector<pair<Cord, Cord>> one;
+	vector<wstring> two;
+	vector<int> KrossWords;
+	WordKross(two, one, KrossWords);
+
+    int n = one.size();
+    vector<pair<wstring, vector<int>>> words(n);
+    int mnH = 1e9, mnN = 1e9, mxH = 0, mxN;
+    for (int i = 0; i < n; ++i) {
+        words[i].first = two[KrossWords[i]];
+        vector<int> b = {one[i].first.x, one[i].first.y, one[i].second.x, one[i].second.y};
+	mnH = min(mnH, min(one[i].first.x, one[i].second.x));
+	mnN = min(mnN, min(one[i].first.y, one[i].second.y));
+        words[i].second = b;
+    }
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            if (j % 2 == 0) words[i].second[j] -= mnH, mxH = max(mxH, words[i].second[j]);
+            else words[i].second[j] -= mnN, mxN = max(mxN, words[i].second[j]);
+        }
+    }
+    wchar_t base[mxH + 1][mxN + 1];
+    for (int i = 0; i < mxH + 1; ++i) {
+        for (int j = 0; j < mxN + 1; ++j) {
+            base[i][j] = ' ';
+        }
+    }
+    for (auto [s, m] : words) {
+        if (m[0] == m[2]) {
+            for (int i = m[1]; i <= m[3]; ++i) {
+                if (base[m[0]][i] == ' ' || base[m[0]][i] == s[i - m[1]]) {
+                    base[m[0]][i] = s[i - m[1]];
+                } else {
+                    Error(m[0], i);
+                }
+            }
+            reverse(s.begin(), s.end());
+            for (int i = m[3]; i <= m[1]; ++i) {
+                if (base[m[0]][i] == ' ' || base[m[0]][i] == s[i - m[3]]) {
+                    base[m[0]][i] = s[i - m[3]];
+                } else {
+                    Error(m[0], i);
+                }
+            }
+        } else {
+            for (int i = m[0]; i <= m[2]; ++i) {
+                if (base[i][m[1]] == ' ' || base[i][m[1]] == s[i - m[0]]) {
+                    base[i][m[1]] = s[i - m[0]];
+                } else {
+                    Error(i, m[1]);
+                }
+            }
+            reverse(s.begin(), s.end());
+            for (int i = m[2]; i <= m[0]; ++i) {
+                if (base[i][m[1]] == ' ' || base[i][m[1]] == s[i - m[2]]) {
+                    base[i][m[1]] = s[i - m[2]];
+                } else {
+                    Error(i, m[1]);
+                }
+            }
+        }
+    }
+
+    for (int i = 0; i < mxH + 1; ++i) {
+        for (int j = mxN; j >= 0; --j) {
+            wcout << base[i][j] << " ";
+        }
+        wcout << '\n';
+    }
+}
+
+int main() {
+	std::locale l(getenv("LANG"));
+    std::locale::global(l);
+	solve();
 	return 0;
 }
