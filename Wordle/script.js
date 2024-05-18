@@ -1,4 +1,4 @@
-const wordList = ["йорт", "гаилә", "ярдәм", "апа", "кәҗә", "алма", "китап"]; // Список возможных слов
+const wordList =  ["йорт", "гаилә", "ярдәм", "апа", "кәҗә", "алма", "китап"]; // Список возможных слов
 const targetWord = wordList[Math.floor(Math.random() * wordList.length)]; // Слово для угадывания
 let currentRow = 0;
 let currentCol = 0;
@@ -37,16 +37,15 @@ function handleKeyPress(key) {
         const cell = document.getElementById(`cell-${currentRow * wordLength + currentCol}`);
         cell.textContent = key;
         currentCol++;
+        if (currentCol === wordLength) {
+            checkWord();
+        }
     }
 }
 
 document.addEventListener("keydown", (e) => {
     const key = e.key.toLowerCase();
-    if (key === "enter") {
-        if (currentCol === wordLength) {
-            checkWord();
-        }
-    } else if (key === "backspace") {
+    if (key === "backspace") {
         if (currentCol > 0) {
             currentCol--;
             const cell = document.getElementById(`cell-${currentRow * wordLength + currentCol}`);
