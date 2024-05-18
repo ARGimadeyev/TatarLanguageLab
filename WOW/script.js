@@ -49,3 +49,9 @@ function checkWord() {
         document.querySelector('button').disabled = true;
     }
 }
+
+document.addEventListener("keypress", function(event) {
+  if (event.keyCode == 13) {
+      checkWord();
+  }
+});
