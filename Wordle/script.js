@@ -25,7 +25,7 @@ function createKeyboard() {
         "qwertyu", 
         "iopasdf", 
         "ghjklzx",
-	"cvbnm"
+	    "cvbnm"
     ];
 
     const keyboard = document.getElementById("keyboard");
