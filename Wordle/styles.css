@@ -15,8 +15,8 @@ body {
     padding: 20px;
     border-radius: 16px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
-    width: 100%;
+    max-width: 90%;
+    width: 400px;
 }
 
 h1 {
@@ -29,21 +29,21 @@ h1 {
 #board {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 10px;
+    gap: 5px;
     margin-bottom: 20px;
 }
 
 .cell {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     border: 2px solid #ccc;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 2rem;
+    font-size: 1.5rem;
     text-transform: uppercase;
     background-color: #f9f9f9;
-    border-radius: 8px;
+    border-radius: 5px;
     transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
 }
 
@@ -69,26 +69,35 @@ h1 {
 }
 
 #keyboard {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 5px;
+    max-width: 100%;
 }
 
 .key {
-    width: 40px;
-    height: 60px;
-    margin: 5px;
+    width: 35px;
+    height: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: #d3d6da;
     border: none;
     color: #333;
-    font-size: 1.2rem;
+    font-size: 1rem;
     cursor: pointer;
-    border-radius: 8px;
+    border-radius: 5px;
     transition: background-color 0.3s, transform 0.3s;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.key.enter,
+.key.backspace {
+    width: 70px;
+    height: 50px;
+    background-color: #999;
+    font-size: 0.9rem;
+    grid-column: span 2;
 }
 
 .key.correct {
