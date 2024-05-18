@@ -120,10 +120,7 @@ function startNewRound() {
 
 function endGame() {
     console.log("End");
-    if (correctAnswersCount < totalRounds) {
-	displayMessage(`К сожалению, вы ответили лишь на ${correctAnswersCount} вопросов`);
-
-    } else {
+    if (correctAnswersCount >= totalRounds) {
 	displayMessage(`Поздравляем! Вы правильно ответили на ${totalRounds} вопросов!`);
     }
     displayWord('');
