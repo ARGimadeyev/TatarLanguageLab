@@ -61,8 +61,8 @@ async def plot(call: types.CallbackQuery, callback_data: NumbersCallbackFactory)
         await call.message.delete()
         await start(call.message)
     elif user_data[call.from_user.id] == QUANTITYPLOT:
-        await call.message.delete()
         await call.message.answer("КОНЕЦ")
+        await plot(call)
         user_data[call.from_user.id] = 0
     else:
         await update_replic(call.message, call.from_user.id)
@@ -75,10 +75,9 @@ async def plot(call: types.CallbackQuery):
     keyboard.add(InlineKeyboardButton(text="zubrilka", url="https://t.me/TatarLanguageLabBot/zubrilka"),
                  InlineKeyboardButton(text="WOW", url="https://t.me/TatarLanguageLabBot/WOW"),
                  InlineKeyboardButton(text="Wordle", url="https://t.me/TatarLanguageLabBot/Wordle"),
-                 InlineKeyboardButton(text="4", callback_data="game4"),
                  InlineKeyboardButton(text="Назад", callback_data="back")
                  )
-    keyboard.adjust(4)
+    keyboard.adjust(3)
     await call.message.answer("Вы долго брели по лесу и поняли, что заблудились. Вокруг вас лишь высоченные сосны и шелестящая трава. Вы поняли, что впереди вас ждут незабываемые приключения и новые знакомства, а пока можно прилечь и подучить татарский язык.", reply_markup=keyboard.as_markup())
 
 
