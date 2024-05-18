@@ -7,7 +7,7 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.filters.command import Command
 from aiogram.enums.parse_mode import ParseMode
 from aiogram.client.default import DefaultBotProperties
-from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, FSInputFile, CallbackQuery, InputFile, \
+from aiogram.types import InlineKeyboardButton, FSInputFile, \
     InputMediaPhoto
 from aiogram.utils.keyboard import InlineKeyboardBuilder, ReplyKeyboardBuilder
 from aiogram import F
@@ -30,6 +30,28 @@ async def start(message: types.Message):
     keyboard.add(InlineKeyboardButton(text="Уеннар", callback_data="uennar"))
     await bot.send_photo(chat_id=message.chat.id, photo=FSInputFile("plotFiles/photo-1.jpg"),
                          caption="Выберите режим игры", reply_markup=keyboard.as_markup())
+
+
+@dp.message(Command("plot"))
+async def goToPlot(message: types.Message):
+    id = message.from_user.id
+    if id not in user_data:
+        user_data[id] = 0
+    await message.answer_photo(photo=plotFiles[user_data[id]], caption=plotDialogs[user_data[id]], parse_mode="html",
+                               reply_markup=get_keyboard(id))
+
+
+@dp.message(Command("games"))
+async def games(message: types.Message):
+    keyboard = InlineKeyboardBuilder()
+    keyboard.add(InlineKeyboardButton(text="zubrilka", url="https://t.me/TatarLanguageLabBot/zubrilka"),
+                 InlineKeyboardButton(text="WOW", url="https://t.me/TatarLanguageLabBot/WOW"),
+                 InlineKeyboardButton(text="Wordle", url="https://t.me/TatarLanguageLabBot/Wordle")
+                 )
+    keyboard.adjust(3)
+    await message.answer(
+        "Вы долго брели по лесу и поняли, что заблудились. Вокруг вас лишь высоченные сосны и шелестящая трава. Вы поняли, что впереди вас ждут незабываемые приключения и новые знакомства, а пока можно прилечь и подучить татарский язык.",
+        reply_markup=keyboard.as_markup())
 
 
 def get_keyboard(id: int):
@@ -78,7 +100,9 @@ async def plot(call: types.CallbackQuery):
                  InlineKeyboardButton(text="Назад", callback_data="back")
                  )
     keyboard.adjust(3)
-    await call.message.answer("Вы долго брели по лесу и поняли, что заблудились. Вокруг вас лишь высоченные сосны и шелестящая трава. Вы поняли, что впереди вас ждут незабываемые приключения и новые знакомства, а пока можно прилечь и подучить татарский язык.", reply_markup=keyboard.as_markup())
+    await call.message.answer(
+        "Вы долго брели по лесу и поняли, что заблудились. Вокруг вас лишь высоченные сосны и шелестящая трава. Вы поняли, что впереди вас ждут незабываемые приключения и новые знакомства, а пока можно прилечь и подучить татарский язык.",
+        reply_markup=keyboard.as_markup())
 
 
 @dp.callback_query(F.data == "back")
