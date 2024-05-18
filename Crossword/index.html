@@ -16,11 +16,13 @@
             height: 100vh;
             margin: 0;
         }
+
         .grid {
             display: grid;
-            grid-template-columns: repeat(9, 50px);
+            grid-template-columns: repeat(13, 50px);
             gap: 5px;
         }
+
         .cell {
             width: 50px;
             height: 50px;
@@ -32,10 +34,12 @@
             color: white;
             background-color: black;
         }
+
         .highlight {
             background-color: yellow;
             color: black;
         }
+
         input, button {
             padding: 10px;
             margin: 10px;
@@ -48,15 +52,11 @@
 <h1>Поиск слова в матрице</h1>
 <input type="text" id="wordInput" placeholder="Введите слово">
 <button onclick="highlightWord()">Поиск</button>
-<script src="script.js"> </script>
-<div class="grid" id="matrix">
-    <div class="cell">H</div>
-
-</div>
+<div class="grid" id="matrix"></div>
 
 <script>
     function highlightWord() {
-        const inputWord = document.getElementById('wordInput').value.toUpperCase();
+        const inputWord = document.getElementById('wordInput').value.toLowerCase();
         const cells = document.querySelectorAll('.cell');
         let found = false;
 
@@ -68,7 +68,7 @@
         let row = [];
         cells.forEach((cell, index) => {
             row.push(cell);
-            if ((index + 1) % 5 === 0) {
+            if (index + 1 === 13) {
                 matrix.push(row);
                 row = [];
             }
@@ -92,7 +92,7 @@
                     }
                 }
                 if (match) {
-                    highlightCells([...Array(inputWord.length).keys()].map(i => ({ row: r, col: c + i })));
+                    highlightCells([...Array(inputWord.length).keys()].map(i => ({row: r, col: c + i})));
                     found = true;
                 }
             }
@@ -109,7 +109,7 @@
                     }
                 }
                 if (match) {
-                    highlightCells([...Array(inputWord.length).keys()].map(i => ({ row: r + i, col: c })));
+                    highlightCells([...Array(inputWord.length).keys()].map(i => ({row: r + i, col: c})));
                     found = true;
                 }
             }
@@ -120,6 +120,6 @@
         }
     }
 </script>
-
+<script src="script.js"></script>
 </body>
 </html>

@@ -39,19 +39,6 @@ function updateScore() {
     scoreDiv.textContent = `Правильных ответов: ${correctAnswersCount}/${totalRounds}`;
 }
 
-function handleRedButton() {
-    if (currentPair) {
-        if (isTatarToRussian) {
-            displayWord(currentPair[1]); // Показываем русское слово
-        } else {
-            displayWord(currentPair[0]); // Показываем татарское слово
-        }
-        setTimeout(() => {
-            startNewRound();
-        }, 2000);
-    }
-}
-
 function handleGreenButton() {
     const userInput = document.getElementById("input").value.trim();
     if (currentPair) {
@@ -75,7 +62,7 @@ function handleGreenButton() {
                     displayMessage("");
                     isTatarToRussian = !isTatarToRussian;
                     startNewRound();
-                }, 400);
+                }, 1000);
             }
         } else {
             if (userInput.toLowerCase() === currentPair[0].toLowerCase()) {
@@ -97,7 +84,7 @@ function handleGreenButton() {
                     displayMessage("");
                     isTatarToRussian = !isTatarToRussian;
                     startNewRound();
-                }, 400);
+                }, 1000);
             }
         }
     }

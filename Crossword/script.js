@@ -1,22 +1,22 @@
-fetch("food/food1.txt")
-    .then((res) => res.text())
-    .then((text) => {
-        let n = Number(text.substring(0, 2));
-        let m = Number(text.substring(3, 5));
-        console.log(text);
-        console.log(n);
-        console.log(m);
-        console.log(text[5]);
-        let field = text.substring(6);
-        console.log(field);
-        let ar = new Array(n);
-        for (let i = 0; i < n; i++) {
-            ar[i] = new Array(m);
-            for (let j = 0; j < m; ++j) {
-                ar[i][j] = ' ';
-            }
-        }
+let fd1 = [
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', 'б', 'э', 'л', 'э', 'ш', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', 'а', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', 'в', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', 'ы', ' ', ' ', 'г', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', 'р', ' ', ' ', 'ө', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', 'к', 'а', 'с', 'т', 'ы', 'б', 'ы', 'й'],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', 'а', ' ', ' ', 'ә', ' ', ' '],
+    ['ө', 'ч', 'п', 'о', 'ч', 'м', 'а', 'к', ' ', ' ', 'д', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'и', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'я', ' ', ' ']
+];
 
-        console.log(ar);
-    })
-    .catch((e) => console.error(e));
+let matrix = document.getElementById("matrix");
+for (let i = 0; i < 10; i++) {
+    for (let j = 0; j < 13; j++) {
+        let div = document.createElement("div");
+        div.innerHTML = fd1[i][j];
+        div.className = "cell";
+        matrix.appendChild(div);
+    }
+}

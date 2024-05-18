@@ -72,7 +72,7 @@ async def plot(call: types.CallbackQuery, callback_data: NumbersCallbackFactory)
 async def plot(call: types.CallbackQuery):
     await call.message.delete()
     keyboard = InlineKeyboardBuilder()
-    keyboard.add(InlineKeyboardButton(text="zubrilka", url="http://t.me/TatarLanguageLabBot/zubrilka"),
+    keyboard.add(InlineKeyboardButton(text="zubrilka", url="https://t.me/TatarLanguageLabBot/zubrilka"),
                  InlineKeyboardButton(text="WOW", url="https://t.me/TatarLanguageLabBot/WOW"),
                  InlineKeyboardButton(text="Wordle", url="https://t.me/TatarLanguageLabBot/Wordle"),
                  InlineKeyboardButton(text="4", callback_data="game4"),
