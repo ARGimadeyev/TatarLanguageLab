@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Guessing Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .word-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .word {
+            font-size: 2em;
+            letter-spacing: 10px;
+            margin: 5px 0;
+        }
+        .hidden {
+            color: transparent;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        }
+        .letters {
+            margin-bottom: 20px;
+        }
+        input {
+            padding: 10px;
+            font-size: 1.2em;
+            border-radius: 10px;
+            border: none;
+            outline: none;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            border-radius: 10px;
+            border: none;
+            background-color: green;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: darkgreen;
+        }
+	#extraLetter {
+	   display: inline-block;
+	}
+    </style>
+</head>
+<body>
+    <div class="word-container" id="word-container"></div>
+    <div class="letters" id="letters"></div>
+    <input type="text" id="input" placeholder="Введите слово">
+    <div class="extraLetter>
+	
+	<button onclick="addSymbol('')"> </button>
+    	<button onclick="addSymbol('ә')">ә</button>
+    	<button onclick="addSymbol('ү')">ү</button>
+    	<button onclick="addSymbol('ө')">ө</button>
+    	<button onclick="addSymbol('ң')">ң</button>
+    	<button onclick="addSymbol('җ')">җ</button>
+    	<button onclick="addSymbol('һ')">һ</button>
+
+    </div>
+    <script>
+        function addSymbol(symbol) {
+            document.getElementById('input').value += symbol;
+        }
+    </script>
+    <button onclick="checkWord()">Проверить</button>
+
+    <script src="script.js"></script>
+</body>
+</html>
