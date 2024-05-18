@@ -1,47 +1,71 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
-    background-color: #121213;
-    color: white;
+    background-color: #f0f4f8;
+    color: #333;
 }
 
 #game-container {
     text-align: center;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: #333;
+    text-shadow: 2px 2px #e0e0e0;
 }
 
 #board {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 5px;
+    gap: 10px;
     margin-bottom: 20px;
 }
 
 .cell {
     width: 60px;
     height: 60px;
-    border: 2px solid #3a3a3c;
+    border: 2px solid #ccc;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 2rem;
     text-transform: uppercase;
-    background-color: #121213;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
 }
 
 .cell.correct {
-    background-color: #538d4e;
+    background-color: #6aaa64;
+    color: white;
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(106, 170, 100, 0.4);
 }
 
 .cell.present {
-    background-color: #b59f3b;
+    background-color: #c9b458;
+    color: white;
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(201, 180, 88, 0.4);
 }
 
 .cell.absent {
-    background-color: #3a3a3c;
+    background-color: #787c7e;
+    color: white;
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(120, 124, 126, 0.4);
 }
 
 #keyboard {
@@ -57,26 +81,44 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #818384;
+    background-color: #d3d6da;
     border: none;
-    color: white;
+    color: #333;
     font-size: 1.2rem;
     cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s, transform 0.3s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .key.correct {
-    background-color: #538d4e;
+    background-color: #6aaa64;
+    color: white;
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(106, 170, 100, 0.4);
 }
 
 .key.present {
-    background-color: #b59f3b;
+    background-color: #c9b458;
+    color: white;
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(201, 180, 88, 0.4);
 }
 
 .key.absent {
-    background-color: #3a3a3c;
+    background-color: #787c7e;
+    color: white;
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(120, 124, 126, 0.4);
+}
+
+.key:active {
+    transform: scale(0.95);
 }
 
 #message {
     margin-top: 20px;
     font-size: 1.2rem;
+    color: #d9534f;
+    transition: opacity 0.3s;
 }

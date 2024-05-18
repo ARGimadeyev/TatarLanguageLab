@@ -106,4 +106,8 @@ function highlightKey(key, status) {
 function setMessage(msg) {
     const messageElement = document.getElementById("message");
     messageElement.textContent = msg;
+    messageElement.style.opacity = 1;
+    setTimeout(() => {
+        messageElement.style.opacity = 0;
+    }, 3000);
 }
