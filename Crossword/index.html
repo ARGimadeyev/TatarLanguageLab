@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поиск слова в матрице</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(5, 50px);
+            gap: 5px;
+        }
+        .cell {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #ccc;
+            font-size: 20px;
+            color: white;
+            background-color: black;
+        }
+        .highlight {
+            background-color: yellow;
+            color: black;
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Поиск слова в матрице</h1>
+<input type="text" id="wordInput" placeholder="Введите слово">
+<button onclick="highlightWord()">Поиск</button>
+
+<div class="grid" id="matrix">
+    <div class="cell">H</div>
+    <div class="cell">E</div>
+    <div class="cell">L</div>
+    <div class="cell">L</div>
+    <div class="cell">O</div>
+    <div class="cell"></div>
+    <div class="cell">W</div>
+    <div class="cell">O</div>
+    <div class="cell">R</div>
+    <div class="cell">L</div>
+    <div class="cell">D</div>
+    <div class="cell"></div>
+    <div class="cell"></div>
+    <div class="cell"></div>
+    <div class="cell"></div>
+    <div class="cell"></div>
+    <div class="cell"></div>
+    <div class="cell"></div>
+    <div class="cell"></div>
+</div>
+
+<script>
+    function highlightWord() {
+        const inputWord = document.getElementById('wordInput').value.toUpperCase();
+        const cells = document.querySelectorAll('.cell');
+        let found = false;
+
+        // Clear previous highlights
+        cells.forEach(cell => cell.classList.remove('highlight'));
+
+        // Convert cells to a 2D array representation of the matrix
+        const matrix = [];
+        let row = [];
+        cells.forEach((cell, index) => {
+            row.push(cell);
+            if ((index + 1) % 5 === 0) {
+                matrix.push(row);
+                row = [];
+            }
+        });
+
+        // Function to highlight cells
+        const highlightCells = (positions) => {
+            positions.forEach(pos => {
+                matrix[pos.row][pos.col].classList.add('highlight');
+            });
+        };
+
+        // Check horizontally
+        for (let r = 0; r < matrix.length; r++) {
+            for (let c = 0; c <= matrix[r].length - inputWord.length; c++) {
+                let match = true;
+                for (let i = 0; i < inputWord.length; i++) {
+                    if (matrix[r][c + i].textContent !== inputWord[i]) {
+                        match = false;
+                        break;
+                    }
+                }
+                if (match) {
+                    highlightCells([...Array(inputWord.length).keys()].map(i => ({ row: r, col: c + i })));
+                    found = true;
+                }
+            }
+        }
+
+        // Check vertically
+        for (let c = 0; c < matrix[0].length; c++) {
+            for (let r = 0; r <= matrix.length - inputWord.length; r++) {
+                let match = true;
+                for (let i = 0; i < inputWord.length; i++) {
+                    if (matrix[r + i][c].textContent !== inputWord[i]) {
+                        match = false;
+                        break;
+                    }
+                }
+                if (match) {
+                    highlightCells([...Array(inputWord.length).keys()].map(i => ({ row: r + i, col: c })));
+                    found = true;
+                }
+            }
+        }
+
+        if (!found) {
+            alert('Слово не найдено!');
+        }
+    }
+</script>
+
+</body>
+</html>

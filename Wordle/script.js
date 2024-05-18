@@ -1,4 +1,4 @@
-const wordList = ["йорт", "гаилә", "ярдәм", "урындык", "кәҗә"]; // Список возможных слов
+const wordList = ["йорт", "гаилә", "ярдәм", "апа", "кәҗә", "алма", "китап"]; // Список возможных слов
 const targetWord = wordList[Math.floor(Math.random() * wordList.length)]; // Слово для угадывания
 let currentRow = 0;
 let currentCol = 0;

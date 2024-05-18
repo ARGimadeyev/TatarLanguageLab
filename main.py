@@ -38,7 +38,8 @@ def get_keyboard(id: int):
     keyboard.button(text="Дальше", callback_data=NumbersCallbackFactory(action="plot_next", value=1))
     if user_data[id] in gameIndex:
         print(user_data[id])
-        keyboard.button(text=gameTitle[user_data[id]], url=f"http://t.me/TatarLanguageLabBot/{gameTitle[user_data[id]]}")
+        keyboard.button(text=gameTitle[user_data[id]],
+                        url=f"http://t.me/TatarLanguageLabBot/{gameTitle[user_data[id]]}")
     keyboard.adjust(2)
     return keyboard.as_markup()
 
@@ -72,13 +73,13 @@ async def plot(call: types.CallbackQuery):
     await call.message.delete()
     keyboard = InlineKeyboardBuilder()
     keyboard.add(InlineKeyboardButton(text="zubrilka", url="http://t.me/TatarLanguageLabBot/zubrilka"),
-                 InlineKeyboardButton(text="2", callback_data="game2"),
-                 InlineKeyboardButton(text="3", callback_data="game3"),
+                 InlineKeyboardButton(text="WOW", url="https://t.me/TatarLanguageLabBot/WOW"),
+                 InlineKeyboardButton(text="Wordle", url="https://t.me/TatarLanguageLabBot/Wordlex"),
                  InlineKeyboardButton(text="4", callback_data="game4"),
                  InlineKeyboardButton(text="Назад", callback_data="back")
                  )
     keyboard.adjust(4)
-    await call.message.answer("Песочница", reply_markup=keyboard.as_markup())
+    await call.message.answer("Вы долго брели по лесу и поняли, что заблудились. Вокруг вас лишь высоченные сосны и шелестящая трава. Вы поняли, что впереди вас ждут незабываемые приключения и новые знакомства, а пока можно прилечь и подучить татарский язык.", reply_markup=keyboard.as_markup())
 
 
 @dp.callback_query(F.data == "back")
