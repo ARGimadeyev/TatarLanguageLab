@@ -74,7 +74,7 @@ async def plot(call: types.CallbackQuery):
     keyboard = InlineKeyboardBuilder()
     keyboard.add(InlineKeyboardButton(text="zubrilka", url="http://t.me/TatarLanguageLabBot/zubrilka"),
                  InlineKeyboardButton(text="WOW", url="https://t.me/TatarLanguageLabBot/WOW"),
-                 InlineKeyboardButton(text="Wordle", url="https://t.me/TatarLanguageLabBot/Wordlex"),
+                 InlineKeyboardButton(text="Wordle", url="https://t.me/TatarLanguageLabBot/Wordle"),
                  InlineKeyboardButton(text="4", callback_data="game4"),
                  InlineKeyboardButton(text="Назад", callback_data="back")
                  )
