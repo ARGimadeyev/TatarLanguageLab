@@ -22,9 +22,10 @@ function createBoard() {
 
 function createKeyboard() {
     const keyboardLayout = [
-        "qwertyuio", 
-        "pasdfghjk", 
-        "lzxcvbnm"
+        "qwertyu", 
+        "iopasdf", 
+        "ghjklzx",
+	"cvbnm"
     ];
 
     const keyboard = document.getElementById("keyboard");
