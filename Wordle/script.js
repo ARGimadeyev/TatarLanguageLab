@@ -1,4 +1,4 @@
-const wordList =  ["йорт", "гаилә", "ярдәм", "апа", "кәҗә", "алма", "китап"]; // Список возможных слов
+const wordList = ["apple", "berry", "cherry", "grape", "lemon"]; // Список возможных слов
 const targetWord = wordList[Math.floor(Math.random() * wordList.length)]; // Слово для угадывания
 let currentRow = 0;
 let currentCol = 0;
@@ -21,15 +21,36 @@ function createBoard() {
 }
 
 function createKeyboard() {
-    const keyboardLayout = "аәбвгдеёжҗзийклмнңоөпрстуүфхһцчшщъыьэюя".split('');
+    const keyboardLayout = [
+        "qwertyu", 
+        "iopasdf", 
+        "ghjklzx",
+	"cvbnm"
+    ];
+
     const keyboard = document.getElementById("keyboard");
-    keyboardLayout.forEach(key => {
-        const button = document.createElement("button");
-        button.textContent = key;
-        button.classList.add("key");
-        button.addEventListener("click", () => handleKeyPress(key));
-        keyboard.appendChild(button);
+
+    keyboardLayout.forEach(row => {
+        row.split('').forEach(key => {
+            const button = document.createElement("button");
+            button.textContent = key;
+            button.classList.add("key");
+            button.addEventListener("click", () => handleKeyPress(key));
+            keyboard.appendChild(button);
+        });
     });
+
+    const enterButton = document.createElement("button");
+    enterButton.textContent = "Enter";
+    enterButton.classList.add("key", "enter");
+    enterButton.addEventListener("click", () => handleEnterPress());
+    keyboard.appendChild(enterButton);
+
+    const backspaceButton = document.createElement("button");
+    backspaceButton.textContent = "⌫";
+    backspaceButton.classList.add("key", "backspace");
+    backspaceButton.addEventListener("click", () => handleBackspacePress());
+    keyboard.appendChild(backspaceButton);
 }
 
 function handleKeyPress(key) {
@@ -37,20 +58,29 @@ function handleKeyPress(key) {
         const cell = document.getElementById(`cell-${currentRow * wordLength + currentCol}`);
         cell.textContent = key;
         currentCol++;
-        if (currentCol === wordLength) {
-            checkWord();
-        }
+    }
+}
+
+function handleEnterPress() {
+    if (currentCol === wordLength) {
+        checkWord();
+    }
+}
+
+function handleBackspacePress() {
+    if (currentCol > 0) {
+        currentCol--;
+        const cell = document.getElementById(`cell-${currentRow * wordLength + currentCol}`);
+        cell.textContent = "";
     }
 }
 
 document.addEventListener("keydown", (e) => {
     const key = e.key.toLowerCase();
-    if (key === "backspace") {
-        if (currentCol > 0) {
-            currentCol--;
-            const cell = document.getElementById(`cell-${currentRow * wordLength + currentCol}`);
-            cell.textContent = "";
-        }
+    if (key === "enter") {
+        handleEnterPress();
+    } else if (key === "backspace") {
+        handleBackspacePress();
     } else if (/^[a-z]$/.test(key)) {
         handleKeyPress(key);
     }
