@@ -29,20 +29,24 @@ async def start(message: types.Message):
     keyboard.button(text="Сюжет", callback_data=NumbersCallbackFactory(action="plot", value=0))
     keyboard.add(InlineKeyboardButton(text="Песочница", callback_data="sandbox"))
     await bot.send_photo(chat_id=message.chat.id, photo=FSInputFile("plotFiles/photo-1.jpg"),
-                         caption="Приветствуем вас!", reply_markup=keyboard.as_markup())
+                         caption="Выберите режим игры", reply_markup=keyboard.as_markup())
 
 
-def get_keyboard():
+def get_keyboard(id: int):
     keyboard = InlineKeyboardBuilder()
     keyboard.button(text="Назад", callback_data=NumbersCallbackFactory(action="plot_back", value=-1))
     keyboard.button(text="Дальше", callback_data=NumbersCallbackFactory(action="plot_next", value=1))
+    if user_data[id] in gameIndex:
+        print(user_data[id])
+        keyboard.button(text=gameTitle[user_data[id]], url=f"http://t.me/TatarLanguageLabBot/{gameTitle[user_data[id]]}")
+    keyboard.adjust(2)
     return keyboard.as_markup()
 
 
 async def update_replic(message: types.Message, id: int):
     await message.edit_media(
         InputMediaPhoto(media=plotFiles[user_data[id]], caption=plotDialogs[user_data[id]], parse_mode="html"),
-        reply_markup=get_keyboard())
+        reply_markup=get_keyboard(id))
 
 
 @dp.callback_query(NumbersCallbackFactory.filter())
@@ -51,7 +55,11 @@ async def plot(call: types.CallbackQuery, callback_data: NumbersCallbackFactory)
         user_data[call.from_user.id] = 0
 
     user_data[call.from_user.id] += callback_data.value
-    if user_data[call.from_user.id] == QUANTITYPLOT:
+    if user_data[call.from_user.id] < 0:
+        user_data[call.from_user.id] = 0
+        await call.message.delete()
+        await start(call.message)
+    elif user_data[call.from_user.id] == QUANTITYPLOT:
         await call.message.delete()
         await call.message.answer("КОНЕЦ")
         user_data[call.from_user.id] = 0
@@ -59,19 +67,24 @@ async def plot(call: types.CallbackQuery, callback_data: NumbersCallbackFactory)
         await update_replic(call.message, call.from_user.id)
 
 
-
-
-
-
 @dp.callback_query(F.data == "sandbox")
 async def plot(call: types.CallbackQuery):
     await call.message.delete()
     keyboard = InlineKeyboardBuilder()
-    keyboard.add(InlineKeyboardButton(text="1", callback_data="game1"),
+    keyboard.add(InlineKeyboardButton(text="zubrilka", url="http://t.me/TatarLanguageLabBot/zubrilka"),
                  InlineKeyboardButton(text="2", callback_data="game2"),
                  InlineKeyboardButton(text="3", callback_data="game3"),
-                 InlineKeyboardButton(text="4", callback_data="game4"))
+                 InlineKeyboardButton(text="4", callback_data="game4"),
+                 InlineKeyboardButton(text="Назад", callback_data="back")
+                 )
+    keyboard.adjust(4)
     await call.message.answer("Песочница", reply_markup=keyboard.as_markup())
+
+
+@dp.callback_query(F.data == "back")
+async def plot(call: types.CallbackQuery):
+    await call.message.delete()
+    await start(call.message)
 
 
 async def main():
@@ -85,5 +98,4 @@ def load():
 
 if __name__ == "__main__":
     load()
-    print("start")
     asyncio.run(main())
