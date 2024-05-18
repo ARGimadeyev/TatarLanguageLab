@@ -27,7 +27,7 @@ class NumbersCallbackFactory(CallbackData, prefix="plot"):
 async def start(message: types.Message):
     keyboard = InlineKeyboardBuilder()
     keyboard.button(text="Сюжет", callback_data=NumbersCallbackFactory(action="plot", value=0))
-    keyboard.add(InlineKeyboardButton(text="Песочница", callback_data="sandbox"))
+    keyboard.add(InlineKeyboardButton(text="Уеннар", callback_data="uennar"))
     await bot.send_photo(chat_id=message.chat.id, photo=FSInputFile("plotFiles/photo-1.jpg"),
                          caption="Выберите режим игры", reply_markup=keyboard.as_markup())
 
@@ -68,7 +68,7 @@ async def plot(call: types.CallbackQuery, callback_data: NumbersCallbackFactory)
         await update_replic(call.message, call.from_user.id)
 
 
-@dp.callback_query(F.data == "sandbox")
+@dp.callback_query(F.data == "uennar")
 async def plot(call: types.CallbackQuery):
     await call.message.delete()
     keyboard = InlineKeyboardBuilder()
