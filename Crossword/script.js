@@ -16,7 +16,11 @@ for (let i = 0; i < 10; i++) {
     for (let j = 0; j < 13; j++) {
         let div = document.createElement("div");
         div.innerHTML = fd1[i][j];
-        div.className = "cell";
+        if (fd1[i][j] === ' ') {
+            div.className = "empty";
+        } else {
+            div.className = "cell";
+        }
         matrix.appendChild(div);
     }
 }

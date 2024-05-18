@@ -34,6 +34,17 @@
             color: white;
             background-color: black;
         }
+        .empty {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #000000;
+            font-size: 20px;
+            color: #000000;
+            background-color: black;
+        }
 
         .highlight {
             background-color: yellow;
@@ -60,10 +71,6 @@
         const cells = document.querySelectorAll('.cell');
         let found = false;
 
-        // Clear previous highlights
-        cells.forEach(cell => cell.classList.remove('highlight'));
-
-        // Convert cells to a 2D array representation of the matrix
         const matrix = [];
         let row = [];
         cells.forEach((cell, index) => {
