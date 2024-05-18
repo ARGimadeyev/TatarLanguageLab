@@ -1,4 +1,4 @@
-const wordList = ["apple", "berry", "cherry", "grape", "lemon"]; // Список возможных слов
+const wordList = ["китап", "алма", "йорт", "табын", "песи"]; // Список возможных слов
 const targetWord = wordList[Math.floor(Math.random() * wordList.length)]; // Слово для угадывания
 let currentRow = 0;
 let currentCol = 0;
@@ -22,10 +22,12 @@ function createBoard() {
 
 function createKeyboard() {
     const keyboardLayout = [
-        "qwertyu", 
-        "iopasdf", 
-        "ghjklzx",
-	    "cvbnm"
+        "аәбвгде", 
+        "ёжҗзийк", 
+        "лмнңоөп",
+	"рстуүфх",
+	"һцчшщъы",
+	"ьэюя"
     ];
 
     const keyboard = document.getElementById("keyboard");
