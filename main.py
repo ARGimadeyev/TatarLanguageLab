@@ -44,10 +44,11 @@ async def goToPlot(message: types.Message):
 @dp.message(Command("games"))
 async def games(message: types.Message):
     await message.answer(
-        "Вы долго брели по лесу и поняли, что заблудились. Вокруг вас лишь высоченные сосны и шелестящая трава. Вы поняли, что впереди вас ждут незабываемые приключения и новые знакомства, а пока можно прилечь и подучить татарский язык.")
+        "У нас есть для вас несколько игр. Играя в них, вы сможете выучить татарский язык и погрузиться в татарскую культуру")
     await message.answer_game("zubrilka")
     await message.answer_game("WOW")
     await message.answer_game("Wordle")
+
 
 def get_keyboard(id: int):
     keyboard = InlineKeyboardBuilder()
@@ -105,15 +106,18 @@ async def Zubrilka(call: types.CallbackQuery):
     await call.message.delete()
     await call.message.answer_game("zubrilka")
 
+
 @dp.callback_query(F.data == "WOW")
 async def Zubrilka(call: types.CallbackQuery):
     await call.message.delete()
     await call.message.answer_game("WOW")
 
+
 @dp.callback_query(F.data == "Wordle")
 async def Zubrilka(call: types.CallbackQuery):
     await call.message.delete()
     await call.message.answer_game("Wordle")
+
 
 @dp.callback_query(F.data == "back")
 async def plot(call: types.CallbackQuery):
