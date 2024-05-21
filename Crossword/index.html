@@ -14,13 +14,16 @@
             margin: 0;
             padding: 20px;
         }
+
         h1 {
             color: #333;
         }
+
         table {
             border-collapse: collapse;
             margin: 20px 0;
         }
+
         td {
             border: 1px solid #464544;
             width: 30px;
@@ -29,13 +32,16 @@
             font-size: 18px;
             color: #f4f4f9; /* Начальный цвет текста белый */
         }
+
         .highlight {
             background-color: yellow;
             color: #000000; /* Цвет текста при подсветке */
         }
+
         .no-border {
             border: none;
         }
+
         input[type="text"] {
             padding: 10px;
             width: 200px;
@@ -43,6 +49,7 @@
             border-radius: 4px;
             margin-bottom: 10px;
         }
+
         button {
             padding: 10px 20px;
             background-color: #28a745;
@@ -52,100 +59,102 @@
             cursor: pointer;
             font-size: 16px;
         }
+
         button:hover {
             background-color: #218838;
         }
     </style>
 </head>
 <body>
-    <h1>Кроссворд</h1>
-    <table id="matrix">
-        <!-- Матрица будет заполнена JavaScript'ом -->
-    </table>
-    <br>
-    <input type="text" id="wordInput" placeholder="Введите слово">
-    <button onclick="searchWord()">Поиск</button>
+<h1>Кроссворд</h1>
+<table id="matrix">
+    <!-- Матрица будет заполнена JavaScript'ом -->
+</table>
+<br>
+<input type="text" id="wordInput" placeholder="Введите слово">
+<button onclick="searchWord()">Проверить</button>
 
-    <script>
-        const matrix = [
-            [' ', ' ', ' ', ' ', ' ', ' ', ' ', 'б', 'э', 'л', 'э', 'ш', ' '],
-            [' ', ' ', ' ', ' ', ' ', ' ', ' ', 'а', ' ', ' ', ' ', ' ', ' '],
-            [' ', ' ', ' ', ' ', ' ', ' ', ' ', 'в', ' ', ' ', ' ', ' ', ' '],
-            [' ', ' ', ' ', ' ', ' ', ' ', ' ', 'ы', ' ', ' ', 'г', ' ', ' '],
-            [' ', ' ', ' ', ' ', ' ', ' ', ' ', 'р', ' ', ' ', 'ө', ' ', ' '],
-            [' ', ' ', ' ', ' ', ' ', 'к', 'а', 'с', 'т', 'ы', 'б', 'ы', 'й'],
-            [' ', ' ', ' ', ' ', ' ', ' ', ' ', 'а', ' ', ' ', 'ә', ' ', ' '],
-            ['ө', 'ч', 'п', 'о', 'ч', 'м', 'а', 'к', ' ', ' ', 'д', ' ', ' '],
-            [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'и', ' ', ' '],
-            [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'я', ' ', ' ']
-        ];
+<script>
+    const matrix = [
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', 'б', 'э', 'л', 'э', 'ш', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', 'а', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', 'в', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', 'ы', ' ', ' ', 'г', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', 'р', ' ', ' ', 'ө', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', 'к', 'а', 'с', 'т', 'ы', 'б', 'ы', 'й'],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', 'а', ' ', ' ', 'ә', ' ', ' '],
+        ['ө', 'ч', 'п', 'о', 'ч', 'м', 'а', 'к', ' ', ' ', 'д', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'и', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'я', ' ', ' ']
+    ];
+    const words = new Set(["бэлэш", "бавырсак", "кастыбый", "гөбәдия", "өчпочмак"]);
 
-        function createTable() {
-            const table = document.getElementById('matrix');
-            matrix.forEach((row, rowIndex) => {
-                const tr = document.createElement('tr');
-                row.forEach((cell, cellIndex) => {
-                    const td = document.createElement('td');
-                    td.textContent = cell;
-                    td.setAttribute('data-row', rowIndex);
-                    td.setAttribute('data-cell', cellIndex);
-                    if (cell === ' ') {
-                        td.classList.add('no-border');
-                    }
-                    tr.appendChild(td);
-                });
-                table.appendChild(tr);
+    function createTable() {
+        const table = document.getElementById('matrix');
+        matrix.forEach((row, rowIndex) => {
+            const tr = document.createElement('tr');
+            row.forEach((cell, cellIndex) => {
+                const td = document.createElement('td');
+                td.textContent = cell;
+                td.setAttribute('data-row', rowIndex);
+                td.setAttribute('data-cell', cellIndex);
+                if (cell === ' ') {
+                    td.classList.add('no-border');
+                }
+                tr.appendChild(td);
             });
-        }
+            table.appendChild(tr);
+        });
+    }
 
-        function searchWord() {
-            const word = document.getElementById('wordInput').value.toLowerCase();
-            if (word) {
-                searchHorizontal(word);
-                searchVertical(word);
+    function searchWord() {
+        const word = document.getElementById('wordInput').value.toLowerCase();
+        if (word && words.has(word)) {
+            searchHorizontal(word);
+            searchVertical(word);
+        }
+    }
+
+    function searchHorizontal(word) {
+        matrix.forEach((row, rowIndex) => {
+            const rowString = row.join('');
+            let startIndex = rowString.indexOf(word);
+            while (startIndex !== -1) {
+                highlightCells(rowIndex, startIndex, word.length, 'horizontal');
+                startIndex = rowString.indexOf(word, startIndex + 1);
+            }
+        });
+    }
+
+    function searchVertical(word) {
+        for (let colIndex = 0; colIndex < matrix[0].length; colIndex++) {
+            let colString = '';
+            for (let rowIndex = 0; rowIndex < matrix.length; rowIndex++) {
+                colString += matrix[rowIndex][colIndex];
+            }
+            let startIndex = colString.indexOf(word);
+            while (startIndex !== -1) {
+                highlightCells(startIndex, colIndex, word.length, 'vertical');
+                startIndex = colString.indexOf(word, startIndex + 1);
             }
         }
+    }
 
-        function searchHorizontal(word) {
-            matrix.forEach((row, rowIndex) => {
-                const rowString = row.join('');
-                let startIndex = rowString.indexOf(word);
-                while (startIndex !== -1) {
-                    highlightCells(rowIndex, startIndex, word.length, 'horizontal');
-                    startIndex = rowString.indexOf(word, startIndex + 1);
-                }
-            });
-        }
-
-        function searchVertical(word) {
-            for (let colIndex = 0; colIndex < matrix[0].length; colIndex++) {
-                let colString = '';
-                for (let rowIndex = 0; rowIndex < matrix.length; rowIndex++) {
-                    colString += matrix[rowIndex][colIndex];
-                }
-                let startIndex = colString.indexOf(word);
-                while (startIndex !== -1) {
-                    highlightCells(startIndex, colIndex, word.length, 'vertical');
-                    startIndex = colString.indexOf(word, startIndex + 1);
-                }
+    function highlightCells(row, col, length, direction) {
+        for (let i = 0; i < length; i++) {
+            let cell;
+            if (direction === 'horizontal') {
+                cell = document.querySelector(`td[data-row="${row}"][data-cell="${col + i}"]`);
+            } else if (direction === 'vertical') {
+                cell = document.querySelector(`td[data-row="${row + i}"][data-cell="${col}"]`);
+            }
+            if (cell) {
+                cell.classList.add('highlight');
             }
         }
+    }
 
-        function highlightCells(row, col, length, direction) {
-            for (let i = 0; i < length; i++) {
-                let cell;
-                if (direction === 'horizontal') {
-                    cell = document.querySelector(`td[data-row="${row}"][data-cell="${col + i}"]`);
-                } else if (direction === 'vertical') {
-                    cell = document.querySelector(`td[data-row="${row + i}"][data-cell="${col}"]`);
-                }
-                if (cell) {
-                    cell.classList.add('highlight');
-                }
-            }
-        }
-
-        createTable();
-    </script>
+    createTable();
+</script>
 </body>
 </html>
