@@ -119,3 +119,5 @@ function endGame() {
 
 // Начать первый раунд
 startNewRound();
+
+alert(document.URL);
