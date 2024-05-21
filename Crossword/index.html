@@ -1,132 +1,151 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Поиск слова в матрице</title>
+    <title>Кроссворд</title>
     <style>
         body {
-            background-color: black;
-            color: white;
             font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 100vh;
             margin: 0;
+            padding: 20px;
         }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(13, 50px);
-            gap: 5px;
+        h1 {
+            color: #333;
         }
-
-        .cell {
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid #ccc;
-            font-size: 20px;
-            color: white;
-            background-color: black;
+        table {
+            border-collapse: collapse;
+            margin: 20px 0;
         }
-        .empty {
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid #000000;
-            font-size: 20px;
-            color: #000000;
-            background-color: black;
+        td {
+            border: 1px solid #464544;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            font-size: 18px;
+            color: #f4f4f9; /* Начальный цвет текста белый */
         }
-
         .highlight {
             background-color: yellow;
-            color: black;
+            color: #000000; /* Цвет текста при подсветке */
         }
-
-        input, button {
+        .no-border {
+            border: none;
+        }
+        input[type="text"] {
             padding: 10px;
-            margin: 10px;
+            width: 200px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
             font-size: 16px;
+        }
+        button:hover {
+            background-color: #218838;
         }
     </style>
 </head>
 <body>
+    <h1>Кроссворд</h1>
+    <table id="matrix">
+        <!-- Матрица будет заполнена JavaScript'ом -->
+    </table>
+    <br>
+    <input type="text" id="wordInput" placeholder="Введите слово">
+    <button onclick="searchWord()">Поиск</button>
 
-<h1>Поиск слова в матрице</h1>
-<input type="text" id="wordInput" placeholder="Введите слово">
-<button onclick="highlightWord()">Поиск</button>
-<div class="grid" id="matrix"></div>
+    <script>
+        const matrix = [
+            [' ', ' ', ' ', ' ', ' ', ' ', ' ', 'б', 'э', 'л', 'э', 'ш', ' '],
+            [' ', ' ', ' ', ' ', ' ', ' ', ' ', 'а', ' ', ' ', ' ', ' ', ' '],
+            [' ', ' ', ' ', ' ', ' ', ' ', ' ', 'в', ' ', ' ', ' ', ' ', ' '],
+            [' ', ' ', ' ', ' ', ' ', ' ', ' ', 'ы', ' ', ' ', 'г', ' ', ' '],
+            [' ', ' ', ' ', ' ', ' ', ' ', ' ', 'р', ' ', ' ', 'ө', ' ', ' '],
+            [' ', ' ', ' ', ' ', ' ', 'к', 'а', 'с', 'т', 'ы', 'б', 'ы', 'й'],
+            [' ', ' ', ' ', ' ', ' ', ' ', ' ', 'а', ' ', ' ', 'ә', ' ', ' '],
+            ['ө', 'ч', 'п', 'о', 'ч', 'м', 'а', 'к', ' ', ' ', 'д', ' ', ' '],
+            [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'и', ' ', ' '],
+            [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'я', ' ', ' ']
+        ];
 
-<script>
-    function highlightWord() {
-        const inputWord = document.getElementById('wordInput').value.toLowerCase();
-        const cells = document.querySelectorAll();
-        let found = false;
-
-        const matrix = [];
-        let row = [];
-        cells.forEach((cell, index) => {
-            row.push(cell);
-            if (index + 1 === 13) {
-                matrix.push(row);
-                row = [];
-            }
-        });
-
-        // Function to highlight cells
-        const highlightCells = (positions) => {
-            positions.forEach(pos => {
-                matrix[pos.row][pos.col].classList.add('highlight');
+        function createTable() {
+            const table = document.getElementById('matrix');
+            matrix.forEach((row, rowIndex) => {
+                const tr = document.createElement('tr');
+                row.forEach((cell, cellIndex) => {
+                    const td = document.createElement('td');
+                    td.textContent = cell;
+                    td.setAttribute('data-row', rowIndex);
+                    td.setAttribute('data-cell', cellIndex);
+                    if (cell === ' ') {
+                        td.classList.add('no-border');
+                    }
+                    tr.appendChild(td);
+                });
+                table.appendChild(tr);
             });
-        };
+        }
 
-        // Check horizontally
-        for (let r = 0; r < matrix.length; r++) {
-            for (let c = 0; c <= matrix[r].length - inputWord.length; c++) {
-                let match = true;
-                for (let i = 0; i < inputWord.length; i++) {
-                    if (matrix[r][c + i].textContent !== inputWord[i]) {
-                        match = false;
-                        break;
-                    }
+        function searchWord() {
+            const word = document.getElementById('wordInput').value.toLowerCase();
+            if (word) {
+                searchHorizontal(word);
+                searchVertical(word);
+            }
+        }
+
+        function searchHorizontal(word) {
+            matrix.forEach((row, rowIndex) => {
+                const rowString = row.join('');
+                let startIndex = rowString.indexOf(word);
+                while (startIndex !== -1) {
+                    highlightCells(rowIndex, startIndex, word.length, 'horizontal');
+                    startIndex = rowString.indexOf(word, startIndex + 1);
                 }
-                if (match) {
-                    highlightCells([...Array(inputWord.length).keys()].map(i => ({row: r, col: c + i})));
-                    found = true;
+            });
+        }
+
+        function searchVertical(word) {
+            for (let colIndex = 0; colIndex < matrix[0].length; colIndex++) {
+                let colString = '';
+                for (let rowIndex = 0; rowIndex < matrix.length; rowIndex++) {
+                    colString += matrix[rowIndex][colIndex];
+                }
+                let startIndex = colString.indexOf(word);
+                while (startIndex !== -1) {
+                    highlightCells(startIndex, colIndex, word.length, 'vertical');
+                    startIndex = colString.indexOf(word, startIndex + 1);
                 }
             }
         }
 
-        // Check vertically
-        for (let c = 0; c < matrix[0].length; c++) {
-            for (let r = 0; r <= matrix.length - inputWord.length; r++) {
-                let match = true;
-                for (let i = 0; i < inputWord.length; i++) {
-                    if (matrix[r + i][c].textContent !== inputWord[i]) {
-                        match = false;
-                        break;
-                    }
+        function highlightCells(row, col, length, direction) {
+            for (let i = 0; i < length; i++) {
+                let cell;
+                if (direction === 'horizontal') {
+                    cell = document.querySelector(`td[data-row="${row}"][data-cell="${col + i}"]`);
+                } else if (direction === 'vertical') {
+                    cell = document.querySelector(`td[data-row="${row + i}"][data-cell="${col}"]`);
                 }
-                if (match) {
-                    highlightCells([...Array(inputWord.length).keys()].map(i => ({row: r + i, col: c})));
-                    found = true;
+                if (cell) {
+                    cell.classList.add('highlight');
                 }
             }
         }
 
-        if (!found) {
-            alert('Слово не найдено!');
-        }
-    }
-</script>
-<script src="script.js"></script>
+        createTable();
+    </script>
 </body>
 </html>
