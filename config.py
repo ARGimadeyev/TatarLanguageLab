@@ -1,4 +1,4 @@
-BOT_TOKEN = '6345756604:AAGsvPMgx-eKwARZAw0Yx5fl9VRXeNU1sQ0'
+BOT_TOKEN = '#####################################'
 QUANTITYPLOT = 14
 
 plotDialogs = [
