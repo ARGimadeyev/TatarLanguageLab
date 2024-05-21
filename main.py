@@ -43,11 +43,13 @@ async def goToPlot(message: types.Message):
 
 @dp.message(Command("games"))
 async def games(message: types.Message):
+    keyboard = InlineKeyboardBuilder()
+    keyboard.add(InlineKeyboardButton(text="zubrilka", url="https://t.me/TatarLanguageLabBot/zubrilka"),
+                 InlineKeyboardButton(text="WOW", url="https://t.me/TatarLanguageLabBot/WOW"),
+                 InlineKeyboardButton(text="Wordle", url="https://t.me/TatarLanguageLabBot/Wordle"))
     await message.answer(
-        "У нас есть для вас несколько игр. Играя в них, вы сможете выучить татарский язык и погрузиться в татарскую культуру")
-    await message.answer_game("zubrilka")
-    await message.answer_game("WOW")
-    await message.answer_game("Wordle")
+        "У нас есть для вас несколько игр. Играя в них, вы сможете выучить татарский язык и погрузиться в татарскую культуру",
+        reply_markup=keyboard.as_markup())
 
 
 def get_keyboard(id: int):
@@ -90,33 +92,15 @@ async def plot(call: types.CallbackQuery, callback_data: NumbersCallbackFactory)
 async def plot(call: types.CallbackQuery):
     await call.message.delete()
     keyboard = InlineKeyboardBuilder()
-    keyboard.add(InlineKeyboardButton(text="zubrilka", callback_data="Zubrilka"),
-                 InlineKeyboardButton(text="WOW", callback_data="WOW"),
-                 InlineKeyboardButton(text="Wordle", callback_data="Wordle"),
+    keyboard.add(InlineKeyboardButton(text="zubrilka", url="https://t.me/TatarLanguageLabBot/zubrilka"),
+                 InlineKeyboardButton(text="WOW", url="https://t.me/TatarLanguageLabBot/WOW"),
+                 InlineKeyboardButton(text="Wordle", url="https://t.me/TatarLanguageLabBot/Wordle"),
                  InlineKeyboardButton(text="Назад", callback_data="back")
                  )
     keyboard.adjust(3)
     await call.message.answer(
         "У нас есть для вас несколько игр. Играя в них, вы сможете выучить татарский язык и погрузиться в татарскую культуру!",
         reply_markup=keyboard.as_markup())
-
-
-@dp.callback_query(F.data == "Zubrilka")
-async def Zubrilka(call: types.CallbackQuery):
-    await call.message.delete()
-    await call.message.answer_game("zubrilka")
-
-
-@dp.callback_query(F.data == "WOW")
-async def Zubrilka(call: types.CallbackQuery):
-    await call.message.delete()
-    await call.message.answer_game("WOW")
-
-
-@dp.callback_query(F.data == "Wordle")
-async def Zubrilka(call: types.CallbackQuery):
-    await call.message.delete()
-    await call.message.answer_game("Wordle")
 
 
 @dp.callback_query(F.data == "back")
