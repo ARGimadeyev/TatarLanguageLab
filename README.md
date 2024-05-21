@@ -19,9 +19,7 @@
 <br>
 ### Интерфейс мини-игр
 
-<img src="photos/zubrilka.jpg" alt="MarineGEO circle logo" style="height: 522px; width:256px;"/>
-<img src="photos/wordle.jpg" alt="MarineGEO circle logo" style="height: 522px; width:256px;"/>
-<img src="photos/wow.jpg" alt="MarineGEO circle logo" style="height: 522px; width:256px;"/>
+![старт](photos/allgames.jpg)
 
 ### Интерфейс сюжетной линии
 ![старт](photos/triangles.png)
